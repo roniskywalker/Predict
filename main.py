@@ -14,7 +14,7 @@ st.title("Predict")
 stocks = ('AAPL', 'GOOG', 'MSFT')
 selected_stock = st.selectbox("Select dataset for prediction", stocks)
 
-n_years = st.slider("Years of prediction:", 1, 3)
+n_years = st.slider("Years of prediction:", 1, 10)
 period = n_years * 365
 
 @st.cache_data
@@ -40,10 +40,17 @@ plot_raw_data()
 df_train = data[['Date', "Close"]]
 df_train = df_train.rename(columns={"Date":"ds", "Close":"y"})
 
-m = Prophet()
-m.fit(df_train)
-future = m.make_future_dataframe(periods=period)
-forecast = m.predict(future)
+model = Prophet()
+model.fit(df_train)
+future = model.make_future_dataframe(periods=period)
+forecast = model.predict(future)
 
 st.subheader('Forecast Data:')
 st.write(forecast.tail())
+
+fig1 = plot_plotly(model, forecast)
+st.plotly_chart(fig1)
+
+st.write('Forecast Components')
+fig2 = model.plot_components(forecast)
+st.write(fig2)
