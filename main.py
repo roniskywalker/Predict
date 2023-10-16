@@ -11,8 +11,7 @@ TODAY = date.today().strftime("%y-%m-%d")
 
 st.title("Predict")
 
-stocks = ('AAPL', 'GOOG', 'MSFT')
-selected_stock = st.selectbox("Select dataset for prediction", stocks)
+selected_stock = st.text_input('Enter Stock Ticker', 'GOOG')
 
 n_years = st.slider("Years of prediction:", 1, 10)
 period = n_years * 365
